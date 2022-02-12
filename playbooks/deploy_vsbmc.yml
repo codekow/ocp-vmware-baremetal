@@ -1,0 +1,16 @@
+---
+# vim: set ft=ansible:
+
+- hosts: vsbmc
+  gather_facts: yes
+
+  vars:
+    vsbmc_image: 10
+  
+  tasks:
+    - name: Install required base packages
+      dnf:
+        name:
+          - podman
+        state: latest
+      become: True

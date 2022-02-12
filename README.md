@@ -6,7 +6,7 @@ Edit the following as appropriate:
 - [inventory/baremetal.yml](inventory/baremetal.yml)
 - [vcenter_vars.yml](vcenter_vars_example.yml)
 
-## Quickstart
+## Quickstart Setup
 ```
 # setup ansible
 python -m venv venv
@@ -15,13 +15,14 @@ python -m venv venv
 pip install -U pip
 pip install -r requirements.txt
 
-# setup ansible-vault
-export ANSIBLE_VAULT_PASSWORD_FILE=~/vault_pass.txt
+# install collection
+ansible-galaxy collection install -r ansible-galaxy.yml
+
 ```
 
 ## Ansible Command
 ```
-ansible-playbook deploy_baremetal.yml -e @vcenter_vars.yml
+ansible-playbook playbooks/main.yml -e @vcenter_vars.yml
 ```
 
 ## References
