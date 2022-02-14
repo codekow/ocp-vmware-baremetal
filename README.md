@@ -3,24 +3,29 @@
 This repository is used to deploy an emulated bare metal nodes using vsbmc in VMware VCenter.
 
 Edit the following as appropriate:
-- [inventory/baremetal.yml](inventory/baremetal.yml)
-- [vcenter_vars.yml](vcenter_vars_example.yml)
+- [inventory/baremetal](inventory/baremetal)
+- [vcenter_vars.yml](vcenter_vars_example.yml) rename / modify the example with login info, etc
 
 ## Quickstart Setup
 ```
-# setup ansible
+# activate python env
 python -m venv venv
 . venv/bin/activate
+```
 
+```
+# everything below is a one time setup
+# this installs ansible in your virtualenv
+
+# setup ansible
 pip install -U pip
 pip install -r requirements.txt
 
 # install collection
 ansible-galaxy collection install -r ansible-galaxy.yml
-
 ```
 
-## Ansible Command
+## Ansible Commands
 ```
 # deploy all the things
 ansible-playbook playbooks/main.yml -e @vcenter_vars.yml
