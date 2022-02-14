@@ -1,0 +1,24 @@
+---
+# vim: set ft=ansible:
+
+- hosts: baremetal
+  gather_facts: no
+
+  vars_prompt:
+    - name: "vcenter_pass"
+      prompt: "vCenter Password"
+  
+  tasks:
+    - name: Delete a baremetal VM
+      vmware_guest:
+        hostname: '{{ vcenter_host }}'
+        username: '{{ vcenter_user }}'
+        password: '{{ vcenter_pass }}'
+        validate_certs: no
+        name: '{{ inventory_hostname }}'
+        datacenter: '{{ vcenter_datacenter }}'
+        cluster: '{{ vcenter_cluster }}'
+        folder: '{{ vcenter_folder }}'
+        state: absent
+      delegate_to: localhost
+      register: vm_delete

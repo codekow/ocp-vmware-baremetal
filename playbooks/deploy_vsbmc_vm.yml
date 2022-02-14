@@ -1,0 +1,45 @@
+---
+# vim: set ft=ansible:
+
+- hosts: vsbmc
+  gather_facts: no
+
+  vars:
+    guest_disk_size: 40
+    guest_memory: 2048
+    guest_vcpu: 2
+    guest_id: rhel8_64Guest
+
+  tasks:
+    - name: Create vsbmc VM
+      vmware_guest:
+        hostname: '{{ vcenter_host }}'
+        username: '{{ vcenter_user }}'
+        password: '{{ vcenter_pass }}'
+        validate_certs: no
+        name: '{{ inventory_hostname }}'
+        datacenter: '{{ vcenter_datacenter }}'
+        cluster: '{{ vcenter_cluster }}'
+        folder: '{{ vcenter_folder }}'
+        annotation: "{{ notes }} - {{ creationdate }}"
+        guest_id: '{{ guest_id }}'
+        annotation: |
+          
+          VCenter Virtual VBMC Host
+
+        state: present
+        disk:
+        - size_gb: "{{ guest_disk_size }}"
+          type: thin
+          datastore: '{{ vcenter_datastore }}'
+        networks:
+        - name: '{{ guest_network }}'
+          mac: '{{ mac_address }}'
+        - name: '{{ guest_network_provision | default( guest_network ) }}'
+        hardware:
+          nested_virt: true
+          boot_firmware: efi
+          memory_mb: '{{ guest_memory }}'
+          num_cpus: '{{ guest_vcpu }}'
+      delegate_to: localhost
+      register: vm_deploy
