@@ -22,7 +22,13 @@ ansible-galaxy collection install -r ansible-galaxy.yml
 
 ## Ansible Command
 ```
+# deploy all the things
 ansible-playbook playbooks/main.yml -e @vcenter_vars.yml
+```
+
+```
+# deploy only bare metal emulated vms
+ansible-playbook playbooks/playbooks/deploy_vmware_baremetal.yml -e @vcenter_vars.yml
 ```
 
 ## References
