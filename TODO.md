@@ -12,7 +12,7 @@ podman run \
   -p "6244:6244/udp" \
   -p "6245:6245/udp" \
   -p "6246:6246/udp" \
-    ghcr.io/kurokobo/vbmc4vsphere:0.10.0
+    ghcr.io/kurokobo/vbmc4vsphere:0.1.0
 
 export vcenter_host=10.0.0.1
 export vcenter_user=adminstrator@vcenter.local

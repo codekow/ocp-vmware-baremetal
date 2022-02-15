@@ -39,7 +39,7 @@
         annotation: |
           {{ creationdate }} - {{ notes }}
           
-          ipmitool -I lanplus -H {{ipmi_host}} -U {{ipmi_user}} -P {{ipmi_pass}} -p {{ipmi_port}} [ARGS]
+          ipmitool -I lanplus -H {{ hostvars[groups['vsbmc'][0]]['ansible_host'] }} -U {{ipmi_user}} -P {{ipmi_pass}} -p {{ipmi_port}} [ARGS]
 
         state: present
         disk:
