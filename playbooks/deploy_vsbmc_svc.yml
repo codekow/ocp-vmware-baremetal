@@ -58,5 +58,11 @@
         
         podman exec -it vsbmc \
           vsbmc start {{ inventory_hostname }}
-        
+      delegate_to: vsbmc
+
+    - name: Setup firewall to allow vsbmc
+      shell: |
+        firewall-cmd --add-port={{ ipmi_port }}/udp --permanent
+        firewall-cmd --reload
+      become: true
       delegate_to: vsbmc

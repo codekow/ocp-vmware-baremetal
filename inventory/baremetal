@@ -6,7 +6,8 @@ ipmi_user='admin'
 ipmi_pass='password'
 
 [baremetal]
-#host00 mac_address='00:50:56:94:BA:C4' ipmi_port='6240 'ipmi_user='ipmiuser' ipmi_pass='secret'
+#host00 mac_address='00:50:56:94:BA:C4' ipmi_port='6240' 'ipmi_user='ipmiuser' ipmi_pass='secret'
+host00 mac_address='00:50:56:94:BA:C4' ipmi_port='6240'
 host01 mac_address='00:50:56:94:BA:C6' ipmi_port='6241'
 host02 mac_address='00:50:56:94:BA:C8' ipmi_port='6242'
 host03 mac_address='00:50:56:94:BA:CA' ipmi_port='6243'
