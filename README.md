@@ -1,6 +1,6 @@
 # Bare Metal Node on VCenter
 
-This repository is used to deploy an emulated bare metal nodes using vsbmc in VMware VCenter.
+This repository is used to deploy emulated bare metal nodes using vsbmc in VMware VCenter.
 
 Edit the following as appropriate:
 - [inventory/baremetal](inventory/baremetal)
