@@ -1,11 +1,11 @@
 ---
 # vim: set ft=ansible:
 
-  # 1. setup baremetal vms
+# 1. setup baremetal vms
 - import_playbook: deploy_vmware_baremetal.yml
 
-  # 2a. setup vsbmc vm
+# 2a. setup vsbmc vm
 - import_playbook: deploy_vsbmc_vm.yml
 
-  # 2b. setup vsbmc service
+# 2b. setup vsbmc service
 - import_playbook: deploy_vsbmc_svc.yml

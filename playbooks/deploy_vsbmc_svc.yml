@@ -40,7 +40,6 @@
             ghcr.io/kurokobo/vbmc4vsphere:0.1.0
       failed_when: false
 
-
 - hosts: baremetal
   gather_facts: false
 
@@ -55,7 +54,7 @@
           --viserver-password {{ vcenter_pass }} \
           --username {{ ipmi_user }} \
           --password {{ ipmi_pass }}
-        
+
         podman exec -it vsbmc \
           vsbmc start {{ inventory_hostname }}
       delegate_to: vsbmc

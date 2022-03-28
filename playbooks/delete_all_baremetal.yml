@@ -5,20 +5,20 @@
   gather_facts: false
 
   vars_prompt:
-    - name: "vcenter_pass"
-      prompt: "vCenter Password"
+    - name: vcenter_pass
+      prompt: vCenter Password
 
   tasks:
     - name: Delete a baremetal VM
       community.vmware.vmware_guest:
-        hostname: '{{ vcenter_host }}'
-        username: '{{ vcenter_user }}'
-        password: '{{ vcenter_pass }}'
+        hostname: "{{ vcenter_host }}"
+        username: "{{ vcenter_user }}"
+        password: "{{ vcenter_pass }}"
         validate_certs: false
-        name: '{{ inventory_hostname }}'
-        datacenter: '{{ vcenter_datacenter }}'
-        cluster: '{{ vcenter_cluster }}'
-        folder: '{{ vcenter_folder }}'
+        name: "{{ inventory_hostname }}"
+        datacenter: "{{ vcenter_datacenter }}"
+        cluster: "{{ vcenter_cluster }}"
+        folder: "{{ vcenter_folder }}"
         state: absent
       delegate_to: localhost
       register: vm_delete

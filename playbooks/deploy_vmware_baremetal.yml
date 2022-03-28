@@ -37,9 +37,9 @@
         guest_id: "{{ guest_id }}"
         annotation: |
           {{ creationdate }} - {{ notes }}
-          
+
           ipmitool -I lanplus -H {{ hostvars[groups['vsbmc'][0]]['ansible_host'] }} -U {{ ipmi_user }} -P {{ ipmi_pass }} -p {{ ipmi_port }} [ARGS]
-          
+
         state: present
         disk:
           - size_gb: "{{ guest_disk_size }}"
