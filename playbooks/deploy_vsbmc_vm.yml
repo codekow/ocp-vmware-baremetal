@@ -2,7 +2,7 @@
 # vim: set ft=ansible:
 
 - hosts: vsbmc
-  gather_facts: no
+  gather_facts: false
 
   vars:
     guest_disk_size: 40
@@ -12,16 +12,15 @@
 
   tasks:
     - name: Create vsbmc VM
-      vmware_guest:
+      community.vmware.vmware_guest:
         hostname: '{{ vcenter_host }}'
         username: '{{ vcenter_user }}'
         password: '{{ vcenter_pass }}'
-        validate_certs: no
+        validate_certs: false
         name: '{{ inventory_hostname }}'
         datacenter: '{{ vcenter_datacenter }}'
         cluster: '{{ vcenter_cluster }}'
         folder: '{{ vcenter_folder }}'
-        annotation: "{{ notes }} - {{ creationdate }}"
         guest_id: '{{ guest_id }}'
         annotation: |
           
@@ -29,13 +28,13 @@
 
         state: present
         disk:
-        - size_gb: "{{ guest_disk_size }}"
-          type: thin
-          datastore: '{{ vcenter_datastore }}'
+          - size_gb: "{{ guest_disk_size }}"
+            type: thin
+            datastore: '{{ vcenter_datastore }}'
         networks:
-        - name: '{{ guest_network }}'
-          mac: '{{ mac_address }}'
-        - name: '{{ guest_network_provision | default( guest_network ) }}'
+          - name: '{{ guest_network }}'
+            mac: '{{ mac_address }}'
+          - name: '{{ guest_network_provision | default( guest_network ) }}'
         hardware:
           nested_virt: true
           boot_firmware: efi

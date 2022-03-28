@@ -1,11 +1,11 @@
 ---
 vcenter_host: 10.0.0.1
 vcenter_user: administrator@vcenter.local
-vcenter_pass: "password"
+vcenter_pass: password
 vcenter_datacenter: datacenter
 vcenter_cluster: cluter
 vcenter_folder: "{{ vcenter_datacenter }}/vm"
 vcenter_datastore: datastore
 guest_network: network
 guest_network_provision: provision
-notes: "Deployed by Ansible"
+notes: Deployed by Ansible

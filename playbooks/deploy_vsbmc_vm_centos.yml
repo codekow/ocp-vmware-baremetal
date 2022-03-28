@@ -2,7 +2,7 @@
 # vim: set ft=ansible:
 
 - hosts: vsbmc
-  gather_facts: no
+  gather_facts: false
 
   vars:
     guest_disk_size: 10
@@ -12,14 +12,14 @@
 
   tasks:
     - name: Setup scratch path
-      file:
+      ansible.builtin.file:
         path: ../scratch
         state: directory
       delegate_to: localhost
       run_once: true
 
     - name: Check if base RHEL/CentOS 8 already disk image exists
-      stat:
+      ansible.builtin.stat:
         path: ../scratch/baseos.qcow2
       delegate_to: localhost
       run_once: true
@@ -33,53 +33,52 @@
       delegate_to: localhost
       run_once: true
       when: not base_result.stat.exists
-    
+
     - name: Convert base image to vmdk
-      command: |
+      ansible.builtin.command: |
         qemu-img convert -O vmdk ../scratch/baseos.qcow2 ../scratch/baseos.vmdk
       delegate_to: localhost
       run_once: true
 
     - name: Create vsbmc VM
-      vmware_guest:
-        hostname: '{{ vcenter_host }}'
-        username: '{{ vcenter_user }}'
-        password: '{{ vcenter_pass }}'
-        validate_certs: no
-        name: '{{ inventory_hostname }}'
-        datacenter: '{{ vcenter_datacenter }}'
-        cluster: '{{ vcenter_cluster }}'
-        folder: '{{ vcenter_folder }}'
-        annotation: "{{ notes }} - {{ creationdate }}"
-        guest_id: '{{ guest_id }}'
+      community.vmware.vmware_guest:
+        hostname: "{{ vcenter_host }}"
+        username: "{{ vcenter_user }}"
+        password: "{{ vcenter_pass }}"
+        validate_certs: false
+        name: "{{ inventory_hostname }}"
+        datacenter: "{{ vcenter_datacenter }}"
+        cluster: "{{ vcenter_cluster }}"
+        folder: "{{ vcenter_folder }}"
+        guest_id: "{{ guest_id }}"
         annotation: |
-          
+
           VCenter Virtual VBMC Host
 
         state: present
         disk:
-        - size_gb: "{{ guest_disk_size }}"
-          type: thin
-          datastore: '{{ vcenter_datastore }}'
+          - size_gb: "{{ guest_disk_size }}"
+            type: thin
+            datastore: "{{ vcenter_datastore }}"
         networks:
-        - name: '{{ guest_network }}'
-          mac: '{{ mac_address }}'
-        - name: '{{ guest_network_provision | default( guest_network ) }}'
+          - name: "{{ guest_network }}"
+            mac: "{{ mac_address }}"
+          - name: "{{ guest_network_provision | default( guest_network ) }}"
         hardware:
           nested_virt: true
           boot_firmware: efi
-          memory_mb: '{{ guest_memory }}'
-          num_cpus: '{{ guest_vcpu }}'
+          memory_mb: "{{ guest_memory }}"
+          num_cpus: "{{ guest_vcpu }}"
       delegate_to: localhost
       register: vm_deploy
-    
+
     - name: Copy file to datastore using delegate_to
       community.vmware.vsphere_copy:
-        hostname: '{{ vcenter_host }}'
-        username: '{{ vcenter_user }}'
-        password: '{{ vcenter_pass }}'
+        hostname: "{{ vcenter_host }}"
+        username: "{{ vcenter_user }}"
+        password: "{{ vcenter_pass }}"
         src: ../scratch/baseos.vmdk
-        datacenter: '{{ vcenter_datacenter }}'
-        datastore: '{{ vcenter_datastore }}'
-        path: '{{ inventory_hostname }}/{{ inventory_hostname }}-1.vmdk'
+        datacenter: "{{ vcenter_datacenter }}"
+        datastore: "{{ vcenter_datastore }}"
+        path: "{{ inventory_hostname }}/{{ inventory_hostname }}-1.vmdk"
       delegate_to: localhost

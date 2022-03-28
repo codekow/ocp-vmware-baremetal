@@ -2,7 +2,7 @@
 # vim: set ft=ansible:
 
 - hosts: baremetal
-  gather_facts: no
+  gather_facts: false
 
   vars:
     guest_disk_size: 120
@@ -11,50 +11,49 @@
     guest_id: rhel8_64Guest
 
   vars_prompt:
-    - name: "vcenter_pass"
-      prompt: "vCenter Password"
-    - name: "notes"
-      prompt: "VM notes"
-      private: no
-      default: "Deployed by Ansible"
-  
+    - name: vcenter_pass
+      prompt: vCenter Password
+    - name: notes
+      prompt: VM notes
+      private: false
+      default: Deployed by Ansible
+
   tasks:
     - name: Set VM creation date
-      set_fact: creationdate="{{lookup('pipe','date "+%Y/%m/%d %H:%M"')}}"
+      ansible.builtin.set_fact: creationdate="{{ lookup('pipe','date "+%Y/%m/%d %H:%M"') }}"
       delegate_to: localhost
       run_once: true
 
     - name: Create a baremetal VM
-      vmware_guest:
-        hostname: '{{ vcenter_host }}'
-        username: '{{ vcenter_user }}'
-        password: '{{ vcenter_pass }}'
-        validate_certs: no
-        name: '{{ inventory_hostname }}'
-        datacenter: '{{ vcenter_datacenter }}'
-        cluster: '{{ vcenter_cluster }}'
-        folder: '{{ vcenter_folder }}'
-        annotation: "{{ notes }} - {{ creationdate }}"
-        guest_id: '{{ guest_id }}'
+      community.vmware.vmware_guest:
+        hostname: "{{ vcenter_host }}"
+        username: "{{ vcenter_user }}"
+        password: "{{ vcenter_pass }}"
+        validate_certs: false
+        name: "{{ inventory_hostname }}"
+        datacenter: "{{ vcenter_datacenter }}"
+        cluster: "{{ vcenter_cluster }}"
+        folder: "{{ vcenter_folder }}"
+        guest_id: "{{ guest_id }}"
         annotation: |
           {{ creationdate }} - {{ notes }}
           
-          ipmitool -I lanplus -H {{ hostvars[groups['vsbmc'][0]]['ansible_host'] }} -U {{ipmi_user}} -P {{ipmi_pass}} -p {{ipmi_port}} [ARGS]
-
+          ipmitool -I lanplus -H {{ hostvars[groups['vsbmc'][0]]['ansible_host'] }} -U {{ ipmi_user }} -P {{ ipmi_pass }} -p {{ ipmi_port }} [ARGS]
+          
         state: present
         disk:
-        - size_gb: "{{ guest_disk_size }}"
-          type: thin
-          datastore: '{{ vcenter_datastore }}'
+          - size_gb: "{{ guest_disk_size }}"
+            type: thin
+            datastore: "{{ vcenter_datastore }}"
         networks:
-        - name: '{{ guest_network }}'
-          mac: '{{ mac_address }}'
-        - name: '{{ guest_network_provision | default( guest_network ) }}'
+          - name: "{{ guest_network }}"
+            mac: "{{ mac_address }}"
+          - name: "{{ guest_network_provision | default( guest_network ) }}"
         hardware:
           nested_virt: true
           boot_firmware: efi
-          memory_mb: '{{ guest_memory }}'
-          num_cpus: '{{ guest_vcpu }}'
+          memory_mb: "{{ guest_memory }}"
+          num_cpus: "{{ guest_vcpu }}"
       delegate_to: localhost
       register: vm_deploy
 
@@ -63,8 +62,8 @@
         hostname: "{{ vcenter_host }}"
         username: "{{ vcenter_user }}"
         password: "{{ vcenter_pass }}"
-        validate_certs: no
-        name: '{{ inventory_hostname }}'
+        validate_certs: false
+        name: "{{ inventory_hostname }}"
         boot_delay: 1000
         enter_bios_setup: false
         boot_retry_enabled: true

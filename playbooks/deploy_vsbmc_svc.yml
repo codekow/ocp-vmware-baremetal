@@ -2,21 +2,21 @@
 # vim: set ft=ansible:
 
 - hosts: vsbmc
-  gather_facts: yes
+  gather_facts: true
 
   vars:
     vsbmc_image: 10
-  
+
   tasks:
     - name: Install required base packages
-      dnf:
+      ansible.builtin.dnf:
         name:
           - podman
         state: latest
       become: true
 
     - name: Setup ${HOME}/vsbmc path
-      file:
+      ansible.builtin.file:
         path: ${HOME}/vsbmc
         state: directory
         mode: 0777
@@ -24,7 +24,7 @@
 
     # TODO: yes this is garbage
     - name: Configure podman to run vsbmc
-      shell: |
+      ansible.builtin.shell: |
         podman rm vsbmc --force
         podman run \
           -d \
@@ -42,11 +42,11 @@
 
 
 - hosts: baremetal
-  gather_facts: no
+  gather_facts: false
 
   tasks:
     - name: Setup vsbmc emulators
-      shell: |
+      ansible.builtin.shell: |
         podman exec -it vsbmc \
           vsbmc add {{ inventory_hostname }} \
           --port {{ ipmi_port }} \
@@ -61,7 +61,7 @@
       delegate_to: vsbmc
 
     - name: Setup firewall to allow vsbmc
-      shell: |
+      ansible.builtin.shell: |
         firewall-cmd --add-port={{ ipmi_port }}/udp --permanent
         firewall-cmd --reload
       become: true
