@@ -9,3 +9,4 @@ vcenter_datastore: datastore
 guest_network: network
 guest_network_provision: provision
 notes: Deployed by Ansible
+baremetal: true

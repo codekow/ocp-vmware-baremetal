@@ -1,0 +1,12 @@
+[bastion]
+vsbmc mac_address='00:50:56:94:FF:C0'
+
+[nodes]
+bootstrap mac_address='00:50:56:94:FF:C2'
+host00 mac_address='00:50:56:94:FF:C4'
+host01 mac_address='00:50:56:94:FF:C6'
+host02 mac_address='00:50:56:94:FF:C8'
+host03 mac_address='00:50:56:94:FF:CA'
+host04 mac_address='00:50:56:94:FF:CC'
+host05 mac_address='00:50:56:94:FF:CE'
+host06 mac_address='00:50:56:94:FF:D0'

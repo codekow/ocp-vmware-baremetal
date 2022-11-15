@@ -1,7 +1,7 @@
 ---
 # vim: set ft=ansible:
 
-- hosts: baremetal
+- hosts: nodes
   gather_facts: false
 
   vars_prompt:
@@ -9,7 +9,7 @@
       prompt: vCenter Password
 
   tasks:
-    - name: Delete a baremetal VM
+    - name: Delete vmware VMs
       community.vmware.vmware_guest:
         hostname: "{{ vcenter_host }}"
         username: "{{ vcenter_user }}"

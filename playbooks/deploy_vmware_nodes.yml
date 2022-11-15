@@ -1,7 +1,7 @@
 ---
 # vim: set ft=ansible:
 
-- hosts: baremetal
+- hosts: nodes
   gather_facts: false
 
   vars:
@@ -38,7 +38,9 @@
         annotation: |
           {{ creationdate }} - {{ notes }}
 
-          ipmitool -I lanplus -H {{ hostvars[groups['vsbmc'][0]]['ansible_host'] }} -U {{ ipmi_user }} -P {{ ipmi_pass }} -p {{ ipmi_port }} [ARGS]
+          {% if ipmi_user is defined %}
+          ipmitool -I lanplus -H {{ hostvars[groups['bastion'][0]]['ansible_host'] }} -U {{ ipmi_user }} -P {{ ipmi_pass }} -p {{ ipmi_port }} [ARGS]
+          {% endif %}
 
         state: present
         disk:
@@ -48,9 +50,11 @@
         networks:
           - name: "{{ guest_network }}"
             mac: "{{ mac_address }}"
-          - name: "{{ guest_network_provision | default( guest_network ) }}"
+          - name: "{{ guest_network_provision | default('') }}"
         hardware:
-          nested_virt: true
+          version: 15
+          nested_virt: "{{ baremetal | default( 'false' ) }}"
+          iommu: "{{ baremetal | default( 'false' ) }}"
           boot_firmware: efi
           memory_mb: "{{ guest_memory }}"
           num_cpus: "{{ guest_vcpu }}"
