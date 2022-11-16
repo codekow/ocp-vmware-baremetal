@@ -50,7 +50,7 @@
         networks:
           - name: "{{ guest_network }}"
             mac: "{{ mac_address }}"
-          - name: "{{ guest_network_provision | default('') }}"
+          - name: "{{ guest_network_provision | default( omit ) }}"
         hardware:
           version: 15
           nested_virt: "{{ baremetal | default( 'false' ) }}"

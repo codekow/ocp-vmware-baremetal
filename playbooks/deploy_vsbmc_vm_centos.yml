@@ -1,11 +1,11 @@
 ---
 # vim: set ft=ansible:
 
-- hosts: vsbmc
+- hosts: bastion
   gather_facts: false
 
   vars:
-    guest_disk_size: 10
+    guest_disk_size: 40
     guest_memory: 4096
     guest_vcpu: 2
     guest_id: rhel8_64Guest
@@ -27,7 +27,7 @@
 
     - name: Downloading CentOS 8 base image
       ansible.builtin.get_url:
-        url: https://cloud.centos.org/centos/8-stream/x86_64/images/CentOS-Stream-GenericCloud-8-20220125.1.x86_64.qcow2
+        url: https://cloud.centos.org/centos/8-stream/x86_64/images/CentOS-Stream-GenericCloud-8-20220913.0.x86_64.qcow2
         dest: ../scratch/baseos.qcow2
         mode: 0644
       delegate_to: localhost
@@ -58,7 +58,7 @@
         state: present
         disk:
           - size_gb: "{{ guest_disk_size }}"
-            type: thin
+            type: thick
             datastore: "{{ vcenter_datastore }}"
         networks:
           - name: "{{ guest_network }}"
@@ -72,13 +72,18 @@
       delegate_to: localhost
       register: vm_deploy
 
+    - debug:
+        msg: "{{ vm_deploy.instance.hw_files | regex_replace('^.*] ') }}"
+
     - name: Copy file to datastore using delegate_to
       community.vmware.vsphere_copy:
         hostname: "{{ vcenter_host }}"
         username: "{{ vcenter_user }}"
         password: "{{ vcenter_pass }}"
+        validate_certs: false
         src: ../scratch/baseos.vmdk
         datacenter: "{{ vcenter_datacenter }}"
         datastore: "{{ vcenter_datastore }}"
-        path: "{{ inventory_hostname }}/{{ inventory_hostname }}-1.vmdk"
+        path: "{{ inventory_hostname }}/{{ inventory_hostname }}.vmdk"
       delegate_to: localhost
+      when: false
