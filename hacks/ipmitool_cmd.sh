@@ -2,7 +2,7 @@
 
 IPMI_USER=admin
 IPMI_PASS=password
-IPMI_HOST=10.1.20.124
+IPMI_HOST=10.1.20.118
 IPMI_ARGS="power status"
 
 ipmitool_cmd(){

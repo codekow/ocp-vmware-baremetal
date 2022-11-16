@@ -4,7 +4,6 @@ vcenter_user: administrator@vcenter.local
 vcenter_pass: password
 vcenter_datacenter: datacenter
 vcenter_cluster: cluter
-vcenter_folder: "{{ vcenter_datacenter }}/vm"
 vcenter_datastore: datastore
 guest_network: network
 guest_network_provision: provision

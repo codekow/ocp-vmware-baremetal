@@ -1,16 +1,19 @@
+[all:vars]
+vcenter_folder="{{ vcenter_datacenter }}/vm/Sandbox/baremetal.lab"
+
 [bastion]
-vsbmc mac_address='00:50:56:94:BA:C0' ansible_host='10.1.20.124' ansible_user='ansible'
+vsbmc.baremetal.lab mac_address='00:50:56:94:BA:C0' ansible_host='10.1.20.118' ansible_user='ansible'
 
 [nodes:vars]
 ipmi_user='admin'
 ipmi_pass='password'
 
 [nodes]
-#host00 mac_address='00:50:56:94:BA:C4' ipmi_port='6240' 'ipmi_user='ipmiuser' ipmi_pass='secret'
-host00 mac_address='00:50:56:94:BA:C4' ipmi_port='6240'
-host01 mac_address='00:50:56:94:BA:C6' ipmi_port='6241'
-host02 mac_address='00:50:56:94:BA:C8' ipmi_port='6242'
-host03 mac_address='00:50:56:94:BA:CA' ipmi_port='6243'
-host04 mac_address='00:50:56:94:BA:CC' ipmi_port='6244'
-host05 mac_address='00:50:56:94:BA:CE' ipmi_port='6245'
-host06 mac_address='00:50:56:94:BA:D0' ipmi_port='6246'
+#host00.baremetal.lab mac_address='00:50:56:94:BA:C4' ipmi_port='6240' 'ipmi_user='ipmiuser' ipmi_pass='secret'
+host00.baremetal.lab mac_address='00:50:56:94:BA:C4' ipmi_port='6240'
+host01.baremetal.lab mac_address='00:50:56:94:BA:C6' ipmi_port='6241'
+host02.baremetal.lab mac_address='00:50:56:94:BA:C8' ipmi_port='6242'
+host03.baremetal.lab mac_address='00:50:56:94:BA:CA' ipmi_port='6243'
+host04.baremetal.lab mac_address='00:50:56:94:BA:CC' ipmi_port='6244'
+host05.baremetal.lab mac_address='00:50:56:94:BA:CE' ipmi_port='6245'
+host06.baremetal.lab mac_address='00:50:56:94:BA:D0' ipmi_port='6246'
