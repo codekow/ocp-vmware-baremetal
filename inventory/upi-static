@@ -1,15 +1,20 @@
 [all:vars]
 vcenter_folder="{{ vcenter_datacenter }}/vm/Sandbox/upi.static.lab"
+ansible_user=ansible
 
 [bastion]
-vsbmc.static.lab mac_address='00:50:56:94:FF:C0'
+bastion.static.lab mac_address='00:50:56:94:FF:C0'
+
+[nodes:vars]
+ipmi_user='admin'
+ipmi_pass='password'
 
 [nodes]
-bootstrap.static.lab mac_address='00:50:56:94:FF:C2'
-host00.static.lab mac_address='00:50:56:94:FF:C4'
-host01.static.lab mac_address='00:50:56:94:FF:C6'
-host02.static.lab mac_address='00:50:56:94:FF:C8'
-host03.static.lab mac_address='00:50:56:94:FF:CA'
-host04.static.lab mac_address='00:50:56:94:FF:CC'
-host05.static.lab mac_address='00:50:56:94:FF:CE'
-host06.static.lab mac_address='00:50:56:94:FF:D0'
+bootstrap.static.lab mac_address='00:50:56:94:FF:C2' ipmi_port='6239'
+host00.static.lab mac_address='00:50:56:94:FF:C4' ipmi_port='6240'
+host01.static.lab mac_address='00:50:56:94:FF:C6' ipmi_port='6241'
+host02.static.lab mac_address='00:50:56:94:FF:C8' ipmi_port='6242'
+host03.static.lab mac_address='00:50:56:94:FF:CA' ipmi_port='6243'
+host04.static.lab mac_address='00:50:56:94:FF:CC' ipmi_port='6244'
+host05.static.lab mac_address='00:50:56:94:FF:CE' ipmi_port='6245'
+host06.static.lab mac_address='00:50:56:94:FF:D0' ipmi_port='6246'

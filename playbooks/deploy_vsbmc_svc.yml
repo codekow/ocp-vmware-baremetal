@@ -1,7 +1,7 @@
 ---
 # vim: set ft=ansible:
 
-- hosts: vsbmc
+- hosts: bastion
   gather_facts: true
 
   vars:
@@ -30,6 +30,7 @@
           -d \
           --name vsbmc \
           -v "${HOME}/vsbmc:/vsbmc:z" \
+          --restart unless-stopped \
           -p "6240:6240/udp" \
           -p "6241:6241/udp" \
           -p "6242:6242/udp" \
@@ -37,10 +38,10 @@
           -p "6244:6244/udp" \
           -p "6245:6245/udp" \
           -p "6246:6246/udp" \
-            ghcr.io/kurokobo/vbmc4vsphere:0.1.0
+            ghcr.io/kurokobo/vbmc4vsphere:0.3.0
       failed_when: false
 
-- hosts: baremetal
+- hosts: nodes
   gather_facts: false
 
   tasks:
@@ -57,11 +58,11 @@
 
         podman exec -it vsbmc \
           vsbmc start {{ inventory_hostname }}
-      delegate_to: vsbmc
+      delegate_to: "{{ groups['bastion'][0] }}"
 
     - name: Setup firewall to allow vsbmc
       ansible.builtin.shell: |
         firewall-cmd --add-port={{ ipmi_port }}/udp --permanent
         firewall-cmd --reload
       become: true
-      delegate_to: vsbmc
+      delegate_to: "{{ groups['bastion'][0] }}"

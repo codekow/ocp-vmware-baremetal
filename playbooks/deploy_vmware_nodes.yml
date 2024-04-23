@@ -1,7 +1,7 @@
 ---
 # vim: set ft=ansible:
 
-- hosts: nodes
+- hosts: nodes,bastion
   gather_facts: false
 
   vars:
